@@ -7,10 +7,16 @@
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
       </ul>
-      <%= form_for('new_user', url: '/users/sign_in', class: 'd-flex"') do |f| %>
+      <% if user_signed_in? %> 
+        <span>Welcome, <%= current_user.email %></span>
+        <a class='btn btn-outline-success btn-sm btn-create-sharing'>Share a movie</a>
+        <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= form_for('new_user', url: '/users/sign_in', class: 'd-flex"') do |f| %>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control-sm me-2' %>
           <%= f.password_field :password, autocomplete: "current-password", class: 'form-control-sm me-2' %>
           <%= f.submit "Log in / Register", :class => 'btn btn-outline-success btn-login btn-sm' %>
+        <% end %>
       <% end %>
     </div>
   </div>

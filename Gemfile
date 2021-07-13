@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'mongoid', '~> 7.0.5'
+gem 'mongoid', '~> 7.3.0'
 
 gem 'devise', '~> 4.8.0'
 
@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
 end
 
 group :development do
@@ -50,7 +51,8 @@ group :test do
   gem 'webdrivers'
 
   gem 'rspec-rails'
-  gem 'database_cleaner'
+  # gem 'database_cleaner'
+  gem 'database_cleaner-mongoid'
   gem 'factory_bot_rails'
   gem 'mongoid-rspec'
 end
