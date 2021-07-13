@@ -1,8 +1,57 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
 @import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons";
+@font-face {
+  font-family: "bootstrap-icons";
+  src: font-url("bootstrap-icons/font/fonts/bootstrap-icons.woff2") format("woff2"),
+    font-url("bootstrap-icons/font/fonts/bootstrap-icons.woff") format("woff");
+}
 
 .btn-login {
   width: 200px;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.no-margin {
+  margin: 0px !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+#home {
+  margin-top: 2rem;
+
+  .share-content {
+    width: 60%;
+    margin: auto;
+    margin-bottom: 20px;
+
+    .share-description {
+      width: 60%;
+      float: right;
+    }
+
+    .bi-hand-thumbs-up { 
+      cursor: pointer;
+    }
+
+    .bi-hand-thumbs-down {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+
+  .share-loadmore {
+    width: 60%;
+    margin: auto;
+    margin-bottom: 20px;
+  }
 }
