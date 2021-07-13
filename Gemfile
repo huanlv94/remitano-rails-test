@@ -20,6 +20,10 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'mongoid', '~> 7.0.5'
+
+gem 'devise', '~> 4.8.0'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
@@ -39,10 +43,16 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
+  gem 'cucumber-rails'
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+
+  gem 'rspec-rails'
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
+  gem 'mongoid-rspec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
