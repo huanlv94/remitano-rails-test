@@ -1,5 +1,4 @@
 <%= render partial: 'navbar' %>
-<%= csrf_meta_tags %>
 
 <%= content_tag :div,
   id: "movie" do %>
@@ -9,5 +8,5 @@
 
 <%= content_tag :div,
   id: "sharing_data",
-  data: {message: 'hiiiii'}.to_json do %>
+  data: {user_id: current_user.id.to_s}.to_json do %>
 <% end %>
