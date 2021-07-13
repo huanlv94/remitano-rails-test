@@ -11,6 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const data = JSON.parse(node.getAttribute('data'))
   ReactDOM.render(
     <Hello data={data}/>,
-    document.body.appendChild(document.createElement('div')),
+    document.getElementById('home')
   )
 })

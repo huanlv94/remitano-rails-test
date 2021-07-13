@@ -1,6 +1,11 @@
+<%= render partial: 'navbar' %>
+<%= content_tag :div,
+  id: "home" do %>
+<% end %>
+
 <%= javascript_pack_tag 'home' %>
 
 <%= content_tag :div,
   id: "sharing_data",
-  data: {message: 'hellooooo'}.to_json do %>
+  data: {message: 'hiiiii'}.to_json do %>
 <% end %>
