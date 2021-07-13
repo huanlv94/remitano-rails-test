@@ -55,6 +55,7 @@ group :test do
   gem 'database_cleaner-mongoid'
   gem 'factory_bot_rails'
   gem 'mongoid-rspec'
+  gem 'rails-controller-testing'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
