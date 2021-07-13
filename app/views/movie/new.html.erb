@@ -1,10 +1,11 @@
 <%= render partial: 'navbar' %>
-<%= content_tag :div,
-  id: "home" do %>
-<% end %>
 <%= csrf_meta_tags %>
 
-<%= javascript_pack_tag 'home' %>
+<%= content_tag :div,
+  id: "movie" do %>
+<% end %>
+
+<%= javascript_pack_tag 'movie' %>
 
 <%= content_tag :div,
   id: "sharing_data",
