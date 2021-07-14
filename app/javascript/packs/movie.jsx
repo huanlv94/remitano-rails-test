@@ -117,10 +117,12 @@ class Movie extends React.Component {
           <h3>Share a movie:</h3>
           <div className="mb-3">
             <input
-              type="email"
-              className="form-control"
+              type='text'
+              className='form-control'
+              id='youtube-url'
               placeholder="Youtube URL"
               onChange={(e) => this.setState({url: e.target.value})}
+              name='youtube-url'
              />
           </div>
         </div>

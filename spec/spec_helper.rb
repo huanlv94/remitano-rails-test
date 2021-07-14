@@ -17,6 +17,14 @@ require 'mongoid-rspec'
 require 'database_cleaner-mongoid'
 # require 'rails/mongoid'
 require 'mongoid'
+require 'capybara/rspec'
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome,
+    options: Selenium::WebDriver::Chrome::Options.new(args: %w[headless window-size=1920,1080]))
+end
+
+Capybara.javascript_driver = :chrome
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -58,6 +66,7 @@ RSpec.configure do |config|
   # Clear DB
   config.before(:suite) do
     DatabaseCleaner[:mongoid].strategy = :deletion
+    `bin/webpack`
   end
 
   config.before(:each) do
