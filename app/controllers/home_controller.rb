@@ -1,5 +1,9 @@
 class HomeController < ApplicationController
   def index
-    # binding.pry
+    movies = Movie.limit(10)
+    @res = []
+    movies.each do |m|
+      @res << Movie.response_json(m)
+    end
   end
 end

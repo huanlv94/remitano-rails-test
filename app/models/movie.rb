@@ -20,10 +20,21 @@ class Movie
       id: movie.id.to_s,
       youtube_id: movie.youtube_id,
       author_id: movie.author.id.to_s,
+      author_email: movie.author.email,
       description: movie.description,
       title: movie.title,
       up_count: movie.up_count,
       down_count: movie.down_count
     }
+  end
+
+  def self.vote(movie, user, type)
+    if type == 'up'
+      movie.upvote(user)
+    else
+      movie.downvote(user)
+    end
+
+    movie.save!
   end
 end

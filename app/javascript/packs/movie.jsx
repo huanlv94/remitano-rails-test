@@ -11,11 +11,12 @@ class Movie extends React.Component {
     this.state = {
       youtube_id: '',
       loading: false,
+      url: ''
     };
   }
 
   getVideoInfo(videoId) {
-    const URL_API=`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet`
+    const URL_API=`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyAOsyFOE83LMqFM9rYrcWsrmKURUQ8Uikc&part=snippet`
     let data = {}
     return axios.get(URL_API).then((response) => {
       if (response.status < 299) {
@@ -34,10 +35,10 @@ class Movie extends React.Component {
       url: '/movie/share',
       data: { authenticity_token: token, movie: form }
     }).then(response => {
-      console.log(response)
       this.setState({
         loading: false,
-        url: ''
+        url: '',
+        youtube_id: ''
       })
       const { data } = response
       toast.success(`Share video id '${form.youtube_id}' successfully!`)
@@ -53,7 +54,6 @@ class Movie extends React.Component {
   }
 
   onClickShare() {
-    const { user_id } = this.props.data
     const { token } = this.props
     const { url } = this.state
     this.setState({
@@ -68,8 +68,7 @@ class Movie extends React.Component {
     } else {
       let youtube_id = url.match(REGEX_URL)[1]
       let form = {
-        youtube_id: youtube_id,
-        author: user_id,
+        youtube_id: youtube_id
       }
 
       this.getVideoInfo(youtube_id).then(data => {

@@ -5,6 +5,7 @@ RSpec.describe MovieController, type: :controller do
   describe 'Test movie controller success case' do
     before do
       @user = FactoryBot.create(:user)
+      @movie = FactoryBot.create(:movie, youtube_id: 'abcxyz12345')
     end
 
     it 'responds 302 when unauthorized' do
@@ -46,8 +47,7 @@ RSpec.describe MovieController, type: :controller do
       post :share, xhr: true, params: { movie: {
         title: 'test-movieee',
         youtube_id: 'xRKhIq6HNBY',
-        description: 'test stringgggg',
-        author: @user.id.to_s
+        description: 'test stringgggg'
       }}
 
       expect(response).to have_http_status(:successful)
@@ -59,13 +59,41 @@ RSpec.describe MovieController, type: :controller do
       expect(movie['author_id']).to eq(@user.id.to_s)
     end
 
-    it 'creates a sharing movie' do
+    it 'create a sharing movie' do
       sign_in @user
       post :share, params: {
-        movie: { youtube_id: 'xRKhIq6HNBY', description: 'Testttt', title: 'TestForce', author: @user.id.to_s }
+        movie: { youtube_id: 'xRKhIq6HNBY', description: 'Testttt', title: 'TestForce' }
       }
 
       expect(response).to have_http_status(:successful)
+    end
+
+    it 'upvote a sharing movie' do
+      sign_in @user
+      post :vote, params: {
+        movie: { id: @movie.id.to_s, type: 'up' }
+      }
+
+      expect(response).to have_http_status(:successful)
+
+      res_body = JSON.parse(response.body)
+
+      expect(res_body['movie']['up_count']).to eq(1)
+      expect(res_body['movie']['up_voters']).to include(@user.id.to_s)
+    end
+
+    it 'downvote a sharing movie' do
+      sign_in @user
+      post :vote, params: {
+        movie: { id: @movie.id.to_s, type: 'down' }
+      }
+
+      expect(response).to have_http_status(:successful)
+
+      res_body = JSON.parse(response.body)
+
+      expect(res_body['movie']['down_count']).to eq(-1)
+      expect(res_body['movie']['down_voters']).to include(@user.id.to_s)
     end
   end
 
@@ -80,8 +108,7 @@ RSpec.describe MovieController, type: :controller do
       post :share, xhr: true, params: { movie: {
         title: '',
         youtube_id: '',
-        description: 'test stringgggg',
-        author: @user.id.to_s
+        description: 'test stringgggg'
       }}
 
       expect(response.status).to eq(406)
@@ -91,34 +118,50 @@ RSpec.describe MovieController, type: :controller do
       expect(req_body['message']).to include('Youtube is too short (minimum is 8 characters)')
     end
 
-    it  'create new sharing from FE failure with not current user logged in' do
-      sign_in @user
-      post :share, xhr: true, params: { movie: {
-        title: 'test',
-        youtube_id: 'xRKhIq6HNBY',
-        description: 'test stringgggg',
-        author: Random.hex(12)
-      }}
-
-      expect(response.status).to eq(422)
-
-      req_body = JSON.parse(response.body)
-      expect(req_body['message']).to include('You is not author with sharing!')
-    end
-
     it  'create new sharing from FE failure with duplicate youtube id' do
       sign_in @user
       post :share, xhr: true, params: { movie: {
         title: 'test',
         youtube_id: 'xRKhIq6HNBY',
-        description: 'test stringgggg',
-        author: @user.id.to_s
+        description: 'test stringgggg'
       }}
 
       expect(response.status).to eq(406)
 
       req_body = JSON.parse(response.body)
       expect(req_body['message']).to include('Youtube is already taken')
+    end
+
+    it 'upvote a sharing movie with unauthorized' do
+      post :vote, params: {
+        movie: { id: @movie.id.to_s, type: 'up' }
+      }
+
+      expect(response.status).to eq(302)
+    end
+
+    it 'upvote a sharing movie with movie id not found' do
+      sign_in @user
+      post :vote, params: {
+        movie: { id: Random.hex(12), type: 'up' }
+      }
+
+      expect(response.status).to eq(404)
+
+      res_body = JSON.parse(response.body)
+      expect(res_body['message']).to include('Document(s) not found for class Movie')
+    end
+
+    it 'downvote a sharing movie with movie id not found' do
+      sign_in @user
+      post :vote, params: {
+        movie: { id: Random.hex(12), type: 'down' }
+      }
+
+      expect(response.status).to eq(404)
+
+      res_body = JSON.parse(response.body)
+      expect(res_body['message']).to include('Document(s) not found for class Movie')
     end
   end
 end

@@ -8,7 +8,7 @@ class Home extends React.Component {
     super(props)
     this.state = {
       loading: false,
-      movies: []
+      movies: this.props.data
     };
   }
 
@@ -19,36 +19,35 @@ class Home extends React.Component {
   }
 
   render() {
-    const { loading } = this.state
+    const { loading, movies } = this.state
+
     return (
       <div className='share-container'>
-        {_.times(1, (i) => (
-          <div className='share-content'>
-            <div className='share-preview embed-responsive'>
-              <iframe width = '39%' className="embed-responsive-item" src="https://www.youtube.com/embed/kGT73GcwhCU?rel=0" allowFullScreen></iframe>
+        <div className='share-content'>
+          {movies.map((movie) => (
+            <div className='share-preview embed-responsive' key={movie.id}>
+              <iframe width = '39%' className="embed-responsive-item" src={`https://www.youtube.com/embed/${movie.youtube_id}?rel=0`} allowFullScreen></iframe>
               <div className='share-description' width='60%'>
-                <h5>Video title</h5>
-                <p className='no-margin'>Share by: huan@gmail.com</p>
+                <h5>{movie.title}</h5>
+                <p className='no-margin'>Share by: {movie.author_email}</p>
                 <p className='no-margin'>
                   <span className="bi bi-hand-thumbs-up"></span>
-                  <span>69</span>
+                  <span>{movie.up_count}</span>
                   <span className="bi bi-hand-thumbs-down"></span>
-                  <span>1</span>
+                  <span>{movie.down_count}</span>
                  </p>
                 <p className='no-margin'> Description:</p>
-                <p>as cj allowfullscreen
-                asc jasc ajscha
-                ascn asjcashjcbasc
-                jascjascbhascb
-                </p>
+                <p style={{fontSize: '14px'}}>{movie.description}</p>
               </div>
             </div>
-          </div>
-        ))}
-        <div className='share-loadmore'>
-          {loading ?
-            <div className="spinner-border text-primary" role="status"></div> :
-            <button className='btn btn-primary full-width' onClick={() => this.loadMore()}>Load more</button>
+          ))}
+          {movies.length >= 10 &&
+            <div className='share-loadmore'>
+              {loading ?
+                <div className="spinner-border text-primary" role="status"></div> :
+                <button className='btn btn-primary full-width' onClick={() => this.loadMore()}>Load more</button>
+              }
+            </div>
           }
         </div>
       </div>
@@ -61,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const data = JSON.parse(node.getAttribute('data'))
   const authToken = document.getElementsByName('csrf-token')[0].content
   ReactDOM.render(
-    <Home data={data}token={authToken}/>,
+    <Home data={data} token={authToken}/>,
     document.getElementById('home')
   )
 })
