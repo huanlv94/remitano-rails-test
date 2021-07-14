@@ -35,7 +35,7 @@ RSpec.describe MovieController, type: :controller do
     #   post :share
     #   should permit(:movie).for(:share, params: { movie: {
     #     title: 'test-movieee',
-    #     url: 'https://www.youtube.com/watch?v=xRKhIq6HNBY',
+    #     youtube_id: 'xRKhIq6HNBY',
     #     description: 'test stringgggg'
     #   }})
     #   expect(response.status).to eq(500)
@@ -45,7 +45,7 @@ RSpec.describe MovieController, type: :controller do
       sign_in @user
       post :share, xhr: true, params: { movie: {
         title: 'test-movieee',
-        url: 'https://www.youtube.com/watch?v=xRKhIq6HNBY',
+        youtube_id: 'xRKhIq6HNBY',
         description: 'test stringgggg',
         author: @user.id.to_s
       }}
@@ -61,8 +61,64 @@ RSpec.describe MovieController, type: :controller do
 
     it 'creates a sharing movie' do
       sign_in @user
-      post :share, params: {movie: 
-        { url: 'https://www.youtube.com/watch?v=xRKhIq6HNBY', description: 'Testttt', title: 'TestForce', author: @user.id.to_s }}
+      post :share, params: {
+        movie: { youtube_id: 'xRKhIq6HNBY', description: 'Testttt', title: 'TestForce', author: @user.id.to_s }
+      }
+
+      expect(response).to have_http_status(:successful)
+    end
+  end
+
+  describe 'Test movie controller failure case' do
+    before do
+      @user = FactoryBot.create(:user)
+      @movie = FactoryBot.create(:movie)
+    end
+
+    it  'create new sharing from FE failure with wrong params' do
+      sign_in @user
+      post :share, xhr: true, params: { movie: {
+        title: '',
+        youtube_id: '',
+        description: 'test stringgggg',
+        author: @user.id.to_s
+      }}
+
+      expect(response.status).to eq(406)
+
+      req_body = JSON.parse(response.body)
+      expect(req_body['message']).to include('Youtube can\'t be blank')
+      expect(req_body['message']).to include('Youtube is too short (minimum is 8 characters)')
+    end
+
+    it  'create new sharing from FE failure with not current user logged in' do
+      sign_in @user
+      post :share, xhr: true, params: { movie: {
+        title: 'test',
+        youtube_id: 'xRKhIq6HNBY',
+        description: 'test stringgggg',
+        author: Random.hex(12)
+      }}
+
+      expect(response.status).to eq(422)
+
+      req_body = JSON.parse(response.body)
+      expect(req_body['message']).to include('You is not author with sharing!')
+    end
+
+    it  'create new sharing from FE failure with duplicate youtube id' do
+      sign_in @user
+      post :share, xhr: true, params: { movie: {
+        title: 'test',
+        youtube_id: 'xRKhIq6HNBY',
+        description: 'test stringgggg',
+        author: @user.id.to_s
+      }}
+
+      expect(response.status).to eq(406)
+
+      req_body = JSON.parse(response.body)
+      expect(req_body['message']).to include('Youtube is already taken')
     end
   end
 end

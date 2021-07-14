@@ -11,6 +11,7 @@ FactoryBot.define do
   factory :movie do
     sequence(:title) { |n| "test-#{n.to_s.rjust(3, "0")}" }
     description  { "abc abcsbc sbc acb" }
+    youtube_id { 'xRKhIq6HNBY' }
 
     author { association :user }
   end

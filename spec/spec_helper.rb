@@ -16,7 +16,6 @@
 require 'mongoid-rspec'
 require 'database_cleaner-mongoid'
 # require 'rails/mongoid'
-require 'mongoid_vote/voteable'
 require 'mongoid'
 
 RSpec.configure do |config|

@@ -3,43 +3,83 @@ import ReactDOM from 'react-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 const axios = require('axios')
+const REGEX_URL = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
 
 class Movie extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      url: '',
+      youtube_id: '',
       loading: false,
     };
   }
 
-  onClickShare () {
+  getVideoInfo(videoId) {
+    const URL_API=`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet`
+    let data = {}
+    return axios.get(URL_API).then((response) => {
+      if (response.status < 299) {
+        data = response.data.items[0].snippet
+        return data
+      } else {
+        toast.error('Failure to fetch vide metadata')
+        return null
+      }
+    })
+  }
+
+  createNewSharing(form, token) {
+    axios({
+      method: 'post',
+      url: '/movie/share',
+      data: { authenticity_token: token, movie: form }
+    }).then(response => {
+      console.log(response)
+      this.setState({
+        loading: false,
+        url: ''
+      })
+      const { data } = response
+      toast.success(`Share video id '${form.youtube_id}' successfully!`)
+    }).catch((err) => {
+      const { message } = err.response.data
+      message.map(mess => {
+        toast.error(mess)
+      })
+      this.setState({
+        loading: false
+      })
+    })
+  }
+
+  onClickShare() {
     const { user_id } = this.props.data
     const { token } = this.props
     const { url } = this.state
     this.setState({
       loading: true
     })
-    if (url.length < 20 || !url.includes('youtube.com/')) {
+
+    if (!url.match(REGEX_URL)) {
       toast.error("It's not a Youtube URL!")
-    } else {
-      let form = {
-        url,
-        authenticity_token: token,
-        user_id
-      }
-      console.log(form)
-      axios({
-        method: 'post',
-        url: '/movie/share',
-        data: form
-      }).then(function (response) {
-        console.log(response)
+      this.setState({
+        loading: false
       })
+    } else {
+      let youtube_id = url.match(REGEX_URL)[1]
+      let form = {
+        youtube_id: youtube_id,
+        author: user_id,
+      }
+
+      this.getVideoInfo(youtube_id).then(data => {
+        form.title = data.title
+        form.description = data.description.slice(0, 100) + '...'
+
+        return this.createNewSharing(form, token)
+      })
+      
     }
-    this.setState({
-      loading: false
-    })
   }
 
   render() {

@@ -10,21 +10,27 @@ class MovieController < ApplicationController
   def share
     movie = Movie.new(movie_params)
     unless movie.author == current_user
-      render json: {
-        statusCode: 422,
-        message: 'You is not author with sharing!'
-      }, status: 422
+      return response_json(422, 'You is not author with sharing!')
     end
 
-    render json: {
-      status: 200,
-      message: 'success',
-      movie: Movie.response_json(movie).to_json
-    }, status: 200
+    if movie.save
+      return response_json(200, 'success', Movie.response_json(movie).to_json)
+    else
+      return response_json(406, movie.errors.full_messages)
+    end
   end
 
   private
   def movie_params
-    params.require(:movie).permit(:title, :author, :description)
+    params.require(:movie).permit(:youtube_id, :title, :author, :description)
+  end
+
+  def response_json(code, mess, data = {})
+    render json: {
+      statusCode: code,
+      message: mess,
+      movie: data
+    }, status: code
+    return
   end
 end
