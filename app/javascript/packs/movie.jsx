@@ -31,6 +31,7 @@ class Movie extends React.Component {
   getVideoInfo(videoId) {
     const URL_API=`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyAOsyFOE83LMqFM9rYrcWsrmKURUQ8Uikc&part=snippet`
     let data = {}
+    // TODO: move to use libraries
     return axios.get(URL_API).then((response) => {
       if (response.status < 299) {
         data = response.data.items[0].snippet

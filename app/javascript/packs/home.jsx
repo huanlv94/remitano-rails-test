@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
+import YouTube from 'react-youtube'
 const axios = require('axios')
 
 class Home extends React.Component {
@@ -62,7 +63,12 @@ class Home extends React.Component {
         <div className='share-content'>
           {movies.map((movie) => (
             <div className='share-preview embed-responsive' key={movie.id}>
-              <iframe width = '39%' className='embed-responsive-item' src={`https://www.youtube.com/embed/${movie.youtube_id}?rel=0`} allowFullScreen></iframe>
+              <YouTube
+                className='embed-responsive-item'
+                videoId={movie.youtube_id}
+                opts={{height: '165', width: '325'}}
+                containerClassName='youtube-player'
+              />
               <div className='share-description' width='60%'>
                 <h6 className='share-description-title'>{movie.title}</h6>
                 {movie.current_vote === null || movie.current_vote === '' ?
