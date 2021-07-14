@@ -23,8 +23,8 @@ class Movie
       author_email: movie.author.email,
       description: movie.description,
       title: movie.title,
-      up_count: movie.up_count,
-      down_count: movie.down_count
+      up_count: movie.up_count.abs,
+      down_count: movie.down_count.abs
     }
   end
 

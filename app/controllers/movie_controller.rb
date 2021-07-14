@@ -5,9 +5,12 @@ class MovieController < ApplicationController
   def index
   end
 
+  # GET /movie/new
   def new
   end
 
+  # Share youtube video
+  # POST /movie/share
   def share
     movie = Movie.new(movie_params)
     movie.author = current_user
@@ -19,12 +22,15 @@ class MovieController < ApplicationController
     end
   end
 
+  # POST /movie/vote
   def vote
     return response_json(404, 'Movie not found') if vote_params[:id].empty?
 
     vote = Movie.vote(@movie, current_user, vote_params[:type])
     if vote
-      return response_json(200, 'success', @movie)
+      response_data = Movie.response_json(@movie)
+      response_data[:current_vote] = @movie.current_vote(current_user)
+      return response_json(200, 'success', response_data)
     else
       return response_json(200, vote.errors.full_messages)
     end

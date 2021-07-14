@@ -9,3 +9,10 @@
   id: "sharing_data",
   data: @res.to_json do %>
 <% end %>
+
+<% if user_signed_in? %>
+  <%= content_tag :div,
+    id: "user_info",
+    data: current_user.id.to_s do %>
+  <% end %>
+<% end %>

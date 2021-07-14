@@ -1,3 +1,9 @@
+/**
+*  Author: @huanlv94
+*  Movie components for share movie page
+*
+*/
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ToastContainer, toast } from 'react-toastify'
@@ -15,6 +21,13 @@ class Movie extends React.Component {
     };
   }
 
+  /*****
+    Get youtube video metadata from API. Get `title` and `description` for `form` parameter
+    @params:
+      - videoId: Youtube video ID. Examp url: https://www.youtube.com/watch?v=kGT73GcwhCU, videoId is `kGT73GcwhCU`
+     @return:
+       - Video metadata
+  */
   getVideoInfo(videoId) {
     const URL_API=`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=AIzaSyAOsyFOE83LMqFM9rYrcWsrmKURUQ8Uikc&part=snippet`
     let data = {}
@@ -23,13 +36,22 @@ class Movie extends React.Component {
         data = response.data.items[0].snippet
         return data
       } else {
-        toast.error('Failure to fetch vide metadata')
+        toast.error('Failure to fetch video metadata')
         return null
       }
     })
   }
 
+  /*****
+    Send XHR request to API create sharing
+    @params:
+      - form: movie paramters
+      - token: auth token
+     @return:
+       - A promise response data from API
+  */
   createNewSharing(form, token) {
+    // TODO: move this request to libraries
     axios({
       method: 'post',
       url: '/movie/share',
@@ -53,6 +75,12 @@ class Movie extends React.Component {
     })
   }
 
+  /*****
+    Handler trigger when click button `Share`.
+    Validate and push message when input is invalid
+    @return:
+      - A XHR call to API
+  */
   onClickShare() {
     const { token } = this.props
     const { url } = this.state

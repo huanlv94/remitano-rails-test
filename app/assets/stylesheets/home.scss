@@ -11,7 +11,6 @@
 }
 
 .btn-login {
-  width: 200px;
 }
 
 .no-padding {
@@ -32,6 +31,17 @@
     margin-left: 10px;
     margin-right: 10px;
   }
+
+  .notice {
+    position: absolute;
+    width: 400px;
+    z-index: 999;
+    bottom: 0px;
+  }
+
+  .devise-login {
+    margin-top: 4rem;
+  }
 }
 
 #home {
@@ -45,6 +55,41 @@
     .share-description {
       width: 60%;
       float: right;
+
+      .share-description-title {
+        width: 80%;
+        float: left;
+      }
+
+      .share-description-vote {
+        width: 20%;
+        float: right;
+        min-height: 50px;
+
+        .bi-hand-thumbs-up {
+          font-size: 2rem;
+          width: 40%;
+          float: right
+        }
+
+        .bi-hand-thumbs-up-fill {
+          font-size: 2rem;
+          width: 100%;
+          text-align: center;
+        }
+
+        .bi-hand-thumbs-down {
+          font-size: 2rem;
+          width: 40%;
+          float: right;
+        }
+
+        .bi-hand-thumbs-down-fill {
+          font-size: 2rem;
+          width: 100%;
+          text-align: center;
+        }
+      }
     }
 
     .bi-hand-thumbs-up { 
