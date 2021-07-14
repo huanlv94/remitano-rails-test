@@ -35,7 +35,6 @@ class Home extends React.Component {
   */
   vote(type, movieId) {
     const { token, movies } = this.state
-    console.log(movieId)
     const form = {
       id: movieId,
       type

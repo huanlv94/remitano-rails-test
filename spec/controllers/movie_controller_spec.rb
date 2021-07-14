@@ -79,7 +79,7 @@ RSpec.describe MovieController, type: :controller do
       res_body = JSON.parse(response.body)
 
       expect(res_body['movie']['up_count']).to eq(1)
-      expect(res_body['movie']['up_voters']).to include(@user.id.to_s)
+      expect(res_body['movie']['current_vote']).to eq('up')
     end
 
     it 'downvote a sharing movie' do
@@ -92,8 +92,8 @@ RSpec.describe MovieController, type: :controller do
 
       res_body = JSON.parse(response.body)
 
-      expect(res_body['movie']['down_count']).to eq(-1)
-      expect(res_body['movie']['down_voters']).to include(@user.id.to_s)
+      expect(res_body['movie']['down_count']).to eq(1)
+      expect(res_body['movie']['current_vote']).to eq('down')
     end
   end
 
@@ -162,6 +162,15 @@ RSpec.describe MovieController, type: :controller do
 
       res_body = JSON.parse(response.body)
       expect(res_body['message']).to include('Document(s) not found for class Movie')
+    end
+
+    it 'downvote a sharing movie with type not found' do
+      sign_in @user
+      post :vote, params: {
+        movie: { id: @movie.id.to_s, type: 'huan' }
+      }
+
+      expect(response.status).to eq(406)
     end
   end
 end

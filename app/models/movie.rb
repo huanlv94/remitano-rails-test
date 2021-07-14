@@ -29,6 +29,8 @@ class Movie
   end
 
   def self.vote(movie, user, type)
+    return false  unless ['up', 'down'].include?(type)
+
     if type == 'up'
       movie.upvote(user)
     else

@@ -27,12 +27,13 @@ class MovieController < ApplicationController
     return response_json(404, 'Movie not found') if vote_params[:id].empty?
 
     vote = Movie.vote(@movie, current_user, vote_params[:type])
+
     if vote
       response_data = Movie.response_json(@movie)
       response_data[:current_vote] = @movie.current_vote(current_user)
       return response_json(200, 'success', response_data)
     else
-      return response_json(200, vote.errors.full_messages)
+      return response_json(406, "Type #{vote_params[:type]} not supported")
     end
   end
 
