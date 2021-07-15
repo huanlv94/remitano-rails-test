@@ -8,7 +8,7 @@ production:
         user: <%= ENV['DB_USER'] %>
         password: <%= ENV['DB_PASS'] %>
         auth_source: admin
-        ssl: true
+        ssl: false
 
 development:
   # Configure available database clients. (required)
