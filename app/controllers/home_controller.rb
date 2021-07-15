@@ -1,3 +1,4 @@
+# HomePage: Show list of movies shred by user
 class HomeController < ApplicationController
   # root path
   # GET /home/index

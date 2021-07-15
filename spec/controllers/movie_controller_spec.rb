@@ -19,14 +19,14 @@ RSpec.describe MovieController, type: :controller do
       expect(response.status).to eq(200)
     end
 
-    it  'responds successfully when visit new sharing' do
+    it 'responds successfully when visit new sharing' do
       sign_in @user
       get :new
       expect(response).to render_template(:new)
       expect(response).to have_http_status(:successful)
     end
 
-    it  'response 302 when create share with unauthorized' do
+    it 'response 302 when create share with unauthorized' do
       post :share
       expect(response.status).to eq(302)
     end
@@ -42,13 +42,13 @@ RSpec.describe MovieController, type: :controller do
     #   expect(response.status).to eq(500)
     # end
 
-    it  'create new sharing from FE successful' do
+    it 'create new sharing from FE successful' do
       sign_in @user
       post :share, xhr: true, params: { movie: {
         title: 'test-movieee',
         youtube_id: 'xRKhIq6HNBY',
         description: 'test stringgggg'
-      }}
+      } }
 
       expect(response).to have_http_status(:successful)
 
@@ -103,13 +103,13 @@ RSpec.describe MovieController, type: :controller do
       @movie = FactoryBot.create(:movie)
     end
 
-    it  'create new sharing from FE failure with wrong params' do
+    it 'create new sharing from FE failure with wrong params' do
       sign_in @user
       post :share, xhr: true, params: { movie: {
         title: '',
         youtube_id: '',
         description: 'test stringgggg'
-      }}
+      } }
 
       expect(response.status).to eq(406)
 
@@ -118,13 +118,13 @@ RSpec.describe MovieController, type: :controller do
       expect(req_body['message']).to include('Youtube is too short (minimum is 8 characters)')
     end
 
-    it  'create new sharing from FE failure with duplicate youtube id' do
+    it 'create new sharing from FE failure with duplicate youtube id' do
       sign_in @user
       post :share, xhr: true, params: { movie: {
         title: 'test',
         youtube_id: 'xRKhIq6HNBY',
         description: 'test stringgggg'
-      }}
+      } }
 
       expect(response.status).to eq(406)
 

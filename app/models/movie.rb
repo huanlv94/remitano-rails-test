@@ -16,7 +16,7 @@ class Movie
   index({ youtube_id: 1 } , { unique: true })
 
   def self.response_json(movie)
-    return {
+    {
       id: movie.id.to_s,
       youtube_id: movie.youtube_id,
       author_id: movie.author.id.to_s,
@@ -29,7 +29,7 @@ class Movie
   end
 
   def self.vote(movie, user, type)
-    return false  unless ['up', 'down'].include?(type)
+    return false unless ['up', 'down'].include?(type)
 
     if type == 'up'
       movie.upvote(user)
