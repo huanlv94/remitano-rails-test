@@ -48,6 +48,11 @@
   <YOUR_APP_DIR>/coverage/index.html
   ```
 
+  - If you want testing coding conventions, follow:
+  ```bash
+  $ rubocop
+  ```
+
 * How to run application on localhost
   - After you run test and all case passed
   - Make sure you have MongoDB running on local
