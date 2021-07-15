@@ -40,6 +40,7 @@
   - Run test unit
   ```bash
   $ bundle install
+  $ bundle exec rake db:mongoid:create_indexes
   $ RACK_ENV=test bundle exec rspec
   ```
   - After run test unit done, open `coverage` in path:
@@ -52,9 +53,10 @@
   - Make sure you have MongoDB running on local
   - Edit file `config/application.yml` for your database connection
   - Run
-  ```ruby
+  ```bash
   $ bundle install
   $ yarn install
+  $ bundle exec rake db:mongoid:create_indexes
   $ rails server
   ```
 
@@ -81,4 +83,5 @@
   - Undo vote / Undo downvote
   - Refactor: use ComponentsDidUpdate for fecth data movies from API instead of get from DOM
   - Use cucumber for BDD
+  - More test case
   - ...

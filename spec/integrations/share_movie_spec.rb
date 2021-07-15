@@ -6,18 +6,6 @@ describe 'Test sharing movie', type: :feature, js: true do
     @movie = FactoryBot.create(:movie)
   end
 
-  it 'GET / - logged in and view homepage' do
-    visit '/users/sign_in'
-    within '#new_user' do
-      fill_in 'Email', with: @user.email
-      fill_in 'Password', with: '123456'
-    end
-
-    click_button 'Log in'
-
-    expect(page).to have_content(@movie.title)
-  end
-
   it 'GET /movie/new - logged in and go to share page' do
     visit '/users/sign_in'
     within '#new_user' do

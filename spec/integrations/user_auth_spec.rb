@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 describe 'creat new a user', type: :feature, js: true do
-    it 'successfully create user' do
+  before do
+    @user = FactoryBot.create(:user, email: 'dup@huan.com')
+  end
+
+  it 'successfully create user' do
     visit 'users/sign_up'
 
     within '#new_user' do
@@ -26,6 +30,19 @@ describe 'creat new a user', type: :feature, js: true do
     click_button 'Sign up'
 
     expect(page).to have_content "Email can't be blank"
+  end
+
+  it 'failed create user with duplicate email' do
+    visit '/users/sign_up'
+
+    within '#new_user' do
+      fill_in 'Email', with: 'dup@huan.com'
+      fill_in 'Password', with: '123456'
+      fill_in 'Password confirmation', with: '123456'
+    end
+    click_button 'Sign up'
+
+    expect(page).to have_content 'Email is already taken'
   end
 end
 

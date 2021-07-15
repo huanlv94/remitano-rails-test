@@ -27,3 +27,5 @@ COPY package.json yarn.lock ./
 RUN yarn install --check-files
 
 COPY . /app/
+
+RUN bundle exec rake db:mongoid:create_indexes
