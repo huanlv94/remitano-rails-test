@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:4.0.9
+    ports:
+      - '27017:27017'
+  web:
+    depends_on:
+      - mongodb
+    build: .
+    image: huanlv/remi-demo:dev
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    environment:
+      DB_NAME: huanlv_development
+      DB_HOST: mongodb:27017
+    ports:
+      - 3000:3000

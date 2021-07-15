@@ -1,6 +1,0 @@
-test:
-  clients:
-    default:
-      database: database_for_test
-        hosts:
-          - localhost:27017
