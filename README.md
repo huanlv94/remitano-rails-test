@@ -78,7 +78,21 @@
   - Open URL: http://localhost:3000
 
 * Deployment instructions
-  - URL demo: 
+  - With this simple app, you should use heroku to deploy quickly.
+  - Login your heroku account and follow:
+  ```bash
+  $ heroku login
+  $ git add .
+  $ git commit -m "deploy to heroku"
+  $ git push heroku master
+  ```
+  - URL demo: <https://funnymovies-huanlv.herokuapp.com/>
+  - If you want to deploy to K8s, following:
+  ```bash
+  $ kubectl apply -f k8s/Deployment.yaml
+  ```
+
+  - After you run this command, 02 pods will be created and 1 service loadbalancer is running to publicize your application to the internet
 
 ## TODO
   - Pagination when load home page
