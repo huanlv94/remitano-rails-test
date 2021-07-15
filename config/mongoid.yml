@@ -1,3 +1,15 @@
+production:
+  clients:
+    default:
+      database: <%= ENV['DB_NAME'] %>
+      hosts:
+        - <%= ENV['DB_HOST'] %>
+      options:
+        user: <%= ENV['DB_USER'] %>
+        password: <%= ENV['DB_PASS'] %>
+        auth_source: admin
+        ssl: true
+
 development:
   # Configure available database clients. (required)
   clients:
