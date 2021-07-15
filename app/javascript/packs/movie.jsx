@@ -120,7 +120,8 @@ class Movie extends React.Component {
               type='text'
               className='form-control'
               id='youtube-url'
-              placeholder="Youtube URL"
+              placeholder='Youtube URL'
+              value={this.state.url}
               onChange={(e) => this.setState({url: e.target.value})}
               name='youtube-url'
              />

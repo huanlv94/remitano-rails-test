@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: remi-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: remi-demo
+  template:
+    metadata:
+      labels:
+        app: remi-demo
+    spec:
+      containers:
+      - name: remi-demo
+        image: huanlv94/remi-demo:latest
+        env:
+        - name: RAILS_ENV
+          value: production
+        - name: RACK_ENV
+          value: production
+        - name: RAILS_LOG_TO_STDOUT
+          value: enabled
+        - name: RAILS_SERVE_STATIC_FILES
+          value: enabled
+        ports:
+        - containerPort: 3000
+          name: http
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: remi-demo-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: remi-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      name: http
+    - protocol: TCP
+      port: 443
+      targetPort: 3000
+      name: http

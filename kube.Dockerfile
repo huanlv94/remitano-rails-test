@@ -20,6 +20,7 @@ COPY Gemfile* /app/
 WORKDIR /app
 
 ENV BUNDLE_PATH /gems
+ENV RAILS_ENV production
 
 RUN bundle install
 
@@ -30,3 +31,6 @@ COPY . /app/
 
 RUN bundle exec rake assets:precompile
 RUN bundle exec rake db:mongoid:create_indexes
+
+EXPOSE 3000
+CMD ['rails', 'server', '-b', '0.0.0.0']
